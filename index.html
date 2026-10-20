@@ -14,6 +14,7 @@
         <nav>
             <a href="#" class="nav-link active" data-target="accueil">Accueil</a>
             <a href="#" class="nav-link" data-target="dinos">Dinos & Compétences</a>
+            <a href="#" class="nav-link" data-target="modded">Dinos Moddés</a>
             <a href="#" class="nav-link" data-target="map">Map Interactive</a>
             <a href="#" class="nav-link" data-target="mises-a-jour">Mises à Jour</a>
             <a href="#" class="nav-link" data-target="communaute">Communauté</a>
@@ -43,15 +44,29 @@
                     <h3>Dinos & Compétences</h3>
                     <p>Retrouvez l'historique complet, les régimes et les panneaux de compétences officiels de chaque espèce.</p>
                 </div>
+                <div class="feature-card" onclick="switchTab('modded')">
+                    <div class="feature-icon">🐲</div>
+                    <h3>Dinos Moddés</h3>
+                    <p>Découvrez les guides, fiches et compétences dédiés aux créatures issues des mods de la communauté.</p>
+                </div>
                 <div class="feature-card" onclick="switchTab('map')">
                     <div class="feature-icon">🗺️</div>
                     <h3>Map Interactive</h3>
                     <p>Repérez les points clés, les ressources et explorez la carte du jeu en toute simplicité.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>100% Dynamique</h3>
-                    <p>Les données sont actualisées en temps réel via notre base centralisée pour ne rien rater des mises à jour.</p>
+            </div>
+
+            <!-- Compteur Like / Dislike (Avis sur le site) -->
+            <div class="site-rating-box">
+                <h3>Aimez-vous ce guide ?</h3>
+                <p>Donnez votre avis pour soutenir le projet !</p>
+                <div class="rating-buttons">
+                    <button class="btn btn-like" onclick="voteSite('like')">
+                        👍 Oui <span id="count-like">0</span>
+                    </button>
+                    <button class="btn secondary btn-dislike" onclick="voteSite('dislike')">
+                        👎 Non <span id="count-dislike">0</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -73,6 +88,28 @@
             <div id="dino-detail-view" style="display: none;">
                 <button class="btn secondary" onclick="backToDinosList()" style="margin-bottom: 1.5rem;">← Retour à la liste</button>
                 <div id="dino-detail-content">
+                    <!-- Le contenu détaillé s'injectera ici -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Dinos Moddés (Copie conforme de Dinos) -->
+        <section id="modded" class="tab-content">
+            <!-- VUE 1 : La liste des dinos moddés -->
+            <div id="modded-list-view">
+                <h2>Encyclopédie des Dinosaures Moddés</h2>
+                <p>Liste des dinosaures moddés générée en direct depuis votre Google Sheet :</p>
+                
+                <div id="modded-grid-container" class="dinos-grid">
+                    <!-- Les cartes des dinos moddés s'injecteront ici -->
+                    <p style="color: #8b949e;">Chargement des dinosaures moddés en cours...</p>
+                </div>
+            </div>
+
+            <!-- VUE 2 : La fiche détaillée du dino moddé -->
+            <div id="modded-detail-view" style="display: none;">
+                <button class="btn secondary" onclick="backToModdedList()" style="margin-bottom: 1.5rem;">← Retour à la liste</button>
+                <div id="modded-detail-content">
                     <!-- Le contenu détaillé s'injectera ici -->
                 </div>
             </div>

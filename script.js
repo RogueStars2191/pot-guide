@@ -4,7 +4,11 @@ const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y
 // URL de ta feuille Google Sheet pour les Patchs (Feuille "liste_patchs" avec le bon gid)
 const PATCHS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y4hurFaZ6C6ADuOaLn_8cCVEwq4/export?format=csv&gid=787364891';
 
+// URL de ta feuille Google Sheet pour les Dinos Moddés (Remplace le gid par le bon onglet de ton choix)
+const MODDED_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y4hurFaZ6C6ADuOaLn_8cCVEwq4/export?format=csv&gid=TON_NOUVEAU_GID';
+
 let dinosDatabase = {}; // Stockera les dinos récupérés du Google Sheet
+let moddedDatabase = {}; // Stockera les dinos moddés récupérés du Google Sheet
 
 function switchTab(targetId) {
     const contents = document.querySelectorAll('.tab-content');
@@ -24,12 +28,11 @@ function switchTab(targetId) {
     }
 }
 
-// Fonction pour charger les données du Google Sheet (Dinos)
+// --- Fonction pour charger les données du Google Sheet (Dinos de base) ---
 async function loadDinosFromGoogleSheet() {
     try {
         const response = await fetch(SHEET_CSV_URL);
         const data = await response.text();
-        
         parseCSV(data);
     } catch (error) {
         console.error("Erreur lors du chargement du Google Sheet :", error);
@@ -40,14 +43,14 @@ async function loadDinosFromGoogleSheet() {
     }
 }
 
-// Fonction pour découper le CSV et remplir la grille
+// Fonction pour découper le CSV et remplir la grille (Dinos de base)
 function parseCSV(csvText) {
     const lines = csvText.split('\n');
     const gridContainer = document.getElementById('dinos-grid-container');
     if (!gridContainer) return;
-    gridContainer.innerHTML = ''; // Nettoyer avant d'injecter
+    gridContainer.innerHTML = ''; 
 
-    dinosDatabase = {}; // Réinitialiser
+    dinosDatabase = {}; 
 
     for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
@@ -72,13 +75,72 @@ function parseCSV(csvText) {
         card.className = 'dino-card';
         card.onclick = () => openDinoDetail(id_dino);
         
+        let regimeDisplay = regime_dino.includes('http') ? 
+            regime_dino.split(',').map(url => `<img src="${url.trim()}" alt="Régime" style="height: 18px; vertical-align: middle;">`).join(' ') : regime_dino;
+
         card.innerHTML = `
             <div class="dino-img-container">
                 <img src="${image_dino}" alt="${nom_dino}" onerror="this.onerror=null; this.src=''; this.parentNode.innerHTML='[ Image indisponible ]';">
             </div>
             <div class="dino-info">
                 <h3>${nom_dino}</h3>
-                <p class="dino-lore"><em>${espece_dino} • ${regime_dino}</em></p>
+                <p class="dino-lore"><em>${espece_dino} • ${regimeDisplay}</em></p>
+            </div>
+        `;
+        gridContainer.appendChild(card);
+    }
+}
+
+// --- Fonction pour charger les données des Dinos Moddés ---
+async function loadModdedFromGoogleSheet() {
+    try {
+        const response = await fetch(MODDED_CSV_URL);
+        const data = await response.text();
+        parseModdedCSV(data);
+    } catch (error) {
+        console.error("Erreur chargement Dinos Moddés :", error);
+        const gridContainer = document.getElementById('modded-grid-container');
+        if (gridContainer) {
+            gridContainer.innerHTML = '<p style="color: #f85149;">Impossible de charger les dinosaures moddés depuis le Google Sheet.</p>';
+        }
+    }
+}
+
+function parseModdedCSV(csvText) {
+    const lines = csvText.split('\n');
+    const gridContainer = document.getElementById('modded-grid-container');
+    if (!gridContainer) return;
+    gridContainer.innerHTML = '';
+    moddedDatabase = {};
+
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        const row = parseCSVRow(line);
+        if (row.length < 7) continue;
+
+        const [id_dino, nom_dino, lore_dino, regime_dino, espece_dino, image_dino, competence_dino] = row;
+
+        moddedDatabase[id_dino] = {
+            id: id_dino, name: nom_dino, lore: lore_dino,
+            regime: regime_dino, espece: espece_dino,
+            imageDino: image_dino, imageCompetence: competence_dino
+        };
+
+        const card = document.createElement('div');
+        card.className = 'dino-card';
+        card.onclick = () => openModdedDetail(id_dino);
+        
+        let regimeDisplay = regime_dino.includes('http') ? 
+            regime_dino.split(',').map(url => `<img src="${url.trim()}" alt="Régime" style="height: 18px; vertical-align: middle;">`).join(' ') : regime_dino;
+
+        card.innerHTML = `
+            <div class="dino-img-container">
+                <img src="${image_dino}" alt="${nom_dino}" onerror="this.onerror=null; this.src=''; this.parentNode.innerHTML='[ Image indisponible ]';">
+            </div>
+            <div class="dino-info">
+                <h3>${nom_dino}</h3>
+                <p class="dino-lore"><em>${espece_dino} • ${regimeDisplay}</em></p>
             </div>
         `;
         gridContainer.appendChild(card);
@@ -106,7 +168,7 @@ function parseCSVRow(text) {
     return result;
 }
 
-// Ouvrir la vue détaillée d'un dino selon ton croquis
+// Ouvrir la vue détaillée d'un dino de base
 function openDinoDetail(dinoKey) {
     const dino = dinosDatabase[dinoKey];
     if (!dino) return;
@@ -115,10 +177,9 @@ function openDinoDetail(dinoKey) {
     const detailView = document.getElementById('dino-detail-view');
     detailView.style.display = 'block';
 
-    // Gestion intelligente du régime : si ce sont des liens d'images, on les affiche en balises img
     let regimeContent = dino.regime;
     if (regimeContent.includes('http')) {
-        regimeContent = regimeContent.split(',').map(url => `<img src="${url.trim()}" alt="Régime" style="height: 50px; vertical-align: middle; margin-right: 4px;">`).join(' ');
+        regimeContent = regimeContent.split(',').map(url => `<img src="${url.trim()}" alt="Régime" style="height: 30px; width: auto; vertical-align: middle; margin-right: 6px;">`).join(' ');
     }
 
     document.getElementById('dino-detail-content').innerHTML = `
@@ -154,6 +215,85 @@ function openDinoDetail(dinoKey) {
 function backToDinosList() {
     document.getElementById('dino-detail-view').style.display = 'none';
     document.getElementById('dinos-list-view').style.display = 'block';
+}
+
+// Ouvrir la vue détaillée d'un dino moddé
+function openModdedDetail(dinoKey) {
+    const dino = moddedDatabase[dinoKey];
+    if (!dino) return;
+
+    document.getElementById('modded-list-view').style.display = 'none';
+    const detailView = document.getElementById('modded-detail-view');
+    detailView.style.display = 'block';
+
+    let regimeContent = dino.regime;
+    if (regimeContent.includes('http')) {
+        regimeContent = regimeContent.split(',').map(url => `<img src="${url.trim()}" alt="Régime" style="height: 30px; width: auto; vertical-align: middle; margin-right: 6px;">`).join(' ');
+    }
+
+    document.getElementById('modded-detail-content').innerHTML = `
+        <div class="dino-detail-container">
+            <div class="dino-header-bar">
+                <h2>${dino.name} (Mod)</h2>
+                <div class="dino-badges">
+                    <span class="badge">${dino.espece}</span>
+                    <span class="badge">${regimeContent}</span>
+                </div>
+            </div>
+
+            <div class="dino-main-content-grid">
+                <div class="dino-big-img-box">
+                    <img src="${dino.imageDino}" alt="${dino.name}" onerror="this.onerror=null; this.parentNode.innerHTML='[ Image Dino Introuvable ]';">
+                </div>
+                <div class="dino-lore-box">
+                    <h3>Histoire & Lore</h3>
+                    <p>${dino.lore}</p>
+                </div>
+            </div>
+
+            <div class="dino-skills-full-banner">
+                <h3>Compétences & Build (Mod)</h3>
+                <div class="skills-img-box">
+                    <img src="${dino.imageCompetence}" alt="Compétences de ${dino.name}" onerror="this.onerror=null; this.parentNode.innerHTML='[ Image Compétences Introuvable ]';">
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function backToModdedList() {
+    document.getElementById('modded-detail-view').style.display = 'none';
+    document.getElementById('modded-list-view').style.display = 'block';
+}
+
+// --- Système de Vote (Like / Dislike) ---
+function loadVotes() {
+    const votes = JSON.parse(localStorage.getItem('pot_site_votes')) || { likes: 0, dislikes: 0 };
+    const likeElem = document.getElementById('count-like');
+    const dislikeElem = document.getElementById('count-dislike');
+    
+    if (likeElem) likeElem.textContent = votes.likes;
+    if (dislikeElem) dislikeElem.textContent = votes.dislikes;
+}
+
+function voteSite(type) {
+    let votes = JSON.parse(localStorage.getItem('pot_site_votes')) || { likes: 0, dislikes: 0 };
+    
+    const hasVoted = localStorage.getItem('pot_has_voted');
+    if (hasVoted) {
+        alert("Vous avez déjà voté, merci pour votre avis !");
+        return;
+    }
+
+    if (type === 'like') {
+        votes.likes++;
+    } else if (type === 'dislike') {
+        votes.dislikes++;
+    }
+
+    localStorage.setItem('pot_site_votes', JSON.stringify(votes));
+    localStorage.setItem('pot_has_voted', 'true');
+    loadVotes();
 }
 
 // --- Gestion des Commentaires de la Communauté ---
@@ -240,7 +380,6 @@ async function loadPatchsFromGoogleSheet() {
         const response = await fetch(PATCHS_CSV_URL);
         const data = await response.text();
         
-        // Utilisation du parseur intelligent pour gérer les retours à la ligne des cellules Google Sheets
         const rows = parseCSVLines(data);
         
         container.innerHTML = '';
@@ -325,8 +464,10 @@ function parseCSVLines(text) {
 document.addEventListener('DOMContentLoaded', () => {
     switchTab('accueil');
     loadDinosFromGoogleSheet();
+    loadModdedFromGoogleSheet();
     loadPatchsFromGoogleSheet();
     loadComments();
+    loadVotes();
 
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {

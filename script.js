@@ -4,7 +4,7 @@ const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y
 // URL de ta feuille Google Sheet pour les Patchs (Feuille "liste_patchs" avec le bon gid)
 const PATCHS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y4hurFaZ6C6ADuOaLn_8cCVEwq4/export?format=csv&gid=787364891';
 
-// URL de ta feuille Google Sheet pour les Dinos Moddés (Remplace le gid par le bon onglet de ton choix)
+// URL de ta feuille Google Sheet pour les Dinos Moddés (avec le bon gid d'export CSV)
 const MODDED_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y4hurFaZ6C6ADuOaLn_8cCVEwq4/export?format=csv&gid=1156698195';
 
 let dinosDatabase = {}; // Stockera les dinos récupérés du Google Sheet
@@ -182,6 +182,23 @@ function openDinoDetail(dinoKey) {
         regimeContent = regimeContent.split(',').map(url => `<img src="${url.trim()}" alt="Régime" style="height: 30px; width: auto; vertical-align: middle; margin-right: 6px;">`).join(' ');
     }
 
+    // Gestion robuste de plusieurs images de compétences séparées par une virgule (avec ou sans espace)
+    let skillsContent = dino.imageCompetence;
+    if (skillsContent && skillsContent.includes('http')) {
+        let skillUrls = skillsContent.split(',').map(url => url.trim());
+        skillsContent = skillUrls.map(url => `
+            <div class="skills-img-box" style="margin-bottom: 1.5rem;">
+                <img src="${url}" alt="Compétences de ${dino.name}" onerror="this.onerror=null; this.parentNode.innerHTML='[ Image Compétences Introuvable ]';">
+            </div>
+        `).join('');
+    } else {
+        skillsContent = `
+            <div class="skills-img-box">
+                <img src="${dino.imageCompetence}" alt="Compétences de ${dino.name}" onerror="this.onerror=null; this.parentNode.innerHTML='[ Image Compétences Introuvable ]';">
+            </div>
+        `;
+    }
+
     document.getElementById('dino-detail-content').innerHTML = `
         <div class="dino-detail-container">
             <div class="dino-header-bar">
@@ -204,9 +221,7 @@ function openDinoDetail(dinoKey) {
 
             <div class="dino-skills-full-banner">
                 <h3>Compétences & Build</h3>
-                <div class="skills-img-box">
-                    <img src="${dino.imageCompetence}" alt="Compétences de ${dino.name}" onerror="this.onerror=null; this.parentNode.innerHTML='[ Image Compétences Introuvable ]';">
-                </div>
+                ${skillsContent}
             </div>
         </div>
     `;
@@ -231,6 +246,23 @@ function openModdedDetail(dinoKey) {
         regimeContent = regimeContent.split(',').map(url => `<img src="${url.trim()}" alt="Régime" style="height: 30px; width: auto; vertical-align: middle; margin-right: 6px;">`).join(' ');
     }
 
+    // Gestion robuste de plusieurs images de compétences séparées par une virgule pour les mods
+    let skillsContent = dino.imageCompetence;
+    if (skillsContent && skillsContent.includes('http')) {
+        let skillUrls = skillsContent.split(',').map(url => url.trim());
+        skillsContent = skillUrls.map(url => `
+            <div class="skills-img-box" style="margin-bottom: 1.5rem;">
+                <img src="${url}" alt="Compétences de ${dino.name}" onerror="this.onerror=null; this.parentNode.innerHTML='[ Image Compétences Introuvable ]';">
+            </div>
+        `).join('');
+    } else {
+        skillsContent = `
+            <div class="skills-img-box">
+                <img src="${dino.imageCompetence}" alt="Compétences de ${dino.name}" onerror="this.onerror=null; this.parentNode.innerHTML='[ Image Compétences Introuvable ]';">
+            </div>
+        `;
+    }
+
     document.getElementById('modded-detail-content').innerHTML = `
         <div class="dino-detail-container">
             <div class="dino-header-bar">
@@ -253,9 +285,7 @@ function openModdedDetail(dinoKey) {
 
             <div class="dino-skills-full-banner">
                 <h3>Compétences & Build (Mod)</h3>
-                <div class="skills-img-box">
-                    <img src="${dino.imageCompetence}" alt="Compétences de ${dino.name}" onerror="this.onerror=null; this.parentNode.innerHTML='[ Image Compétences Introuvable ]';">
-                </div>
+                ${skillsContent}
             </div>
         </div>
     `;

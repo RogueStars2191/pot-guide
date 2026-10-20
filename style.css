@@ -1,0 +1,604 @@
+/* Styles Généraux & Ambiance Sombre */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #0f1319 !important;
+    color: #e1e1e6 !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barre de Navigation */
+header {
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #f0883e;
+}
+
+nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: #8b949e;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #f0883e;
+}
+
+/* Contenu Principal & Gestion des Onglets */
+main {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Forcer le masquage des onglets inactifs */
+.tab-content {
+    display: none !important;
+}
+
+.tab-content.active {
+    display: block !important;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typographie & Boutons */
+h1, h2 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+p {
+    color: #8b949e;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    background-color: #f0883e;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn:hover {
+    background-color: #d7742d;
+}
+
+.btn.secondary {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+}
+
+.btn.secondary:hover {
+    background-color: #30363d;
+}
+
+/* Grille des Dinos Dynamique */
+.dinos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 350px));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.dino-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+}
+
+.dino-card:hover {
+    transform: translateY(-5px);
+    border-color: #f0883e;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.dino-img-container {
+    width: 100%;
+    height: 200px;
+    background-color: #21262d;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dino-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.dino-card:hover .dino-img-container img {
+    transform: scale(1.05);
+}
+
+.dino-info {
+    padding: 1.25rem;
+}
+
+.dino-info h3 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    text-transform: capitalize;
+}
+
+.dino-lore {
+    font-size: 0.85rem;
+    color: #8b949e;
+    margin-bottom: 0;
+}
+
+/* Mise en page de la fiche détaillée */
+.dino-detail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.dino-header-bar {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dino-badges {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.badge {
+    background-color: #21262d;
+    color: #f0883e;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border: 1px solid #30363d;
+}
+
+.dino-main-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 1.5rem;
+}
+
+.dino-big-img-box {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    height: 350px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b949e;
+}
+
+.dino-big-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dino-lore-box {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.5rem;
+    color: #c9d1d9;
+}
+
+.dino-lore-box h3 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.dino-skills-full-banner {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.dino-skills-full-banner h3 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.skills-img-box {
+    width: 100%;
+    background-color: #21262d;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b949e;
+    min-height: 200px;
+}
+
+.skills-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Conteneur Map */
+.map-container {
+    width: 100%;
+    height: 82vh;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.map-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    background-color: #0f1319;
+}
+
+@media (max-width: 768px) {
+    .dino-main-content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Sélecteur de Cartes Interactives --- */
+.map-selector-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.map-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.25rem;
+}
+
+.map-btn.secondary {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+}
+
+/* --- Style de la Page d'Accueil Immersion --- */
+.hero-banner {
+    background: linear-gradient(135deg, #161b22 0%, #0f1319 100%);
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 4rem 3rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100%;
+    background: radial-gradient(circle, rgba(240, 136, 62, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero-badge {
+    display: inline-block;
+    background-color: rgba(240, 136, 62, 0.15);
+    color: #f0883e;
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border: 1px solid rgba(240, 136, 62, 0.3);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hero-content h1 {
+    font-size: 2.8rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.hero-content h1 .highlight {
+    color: #f0883e;
+    text-shadow: 0 0 20px rgba(240, 136, 62, 0.3);
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: #8b949e;
+    max-width: 700px;
+    margin-bottom: 2rem;
+}
+
+.home-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.feature-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 2rem;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: #f0883e;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.feature-card p {
+    font-size: 0.9rem;
+    color: #8b949e;
+    margin-bottom: 0;
+}
+
+.hero-buttons .btn {
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(240, 136, 62, 0.2);
+}
+
+@media (max-width: 768px) {
+    .hero-banner {
+        padding: 2rem 1.5rem;
+    }
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+}
+
+/* --- Pied de Page (Footer) --- */
+footer {
+    background-color: #161b22;
+    border-top: 1px solid #30363d;
+    padding: 1.5rem 2rem;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+footer p {
+    color: #8b949e;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.twitch-link {
+    color: #9146FF;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s, text-decoration 0.2s;
+}
+
+.twitch-link:hover {
+    color: #a970ff;
+    text-decoration: underline;
+}
+
+/* --- Style Section Communauté & Commentaires --- */
+.comment-form-box {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-input {
+    width: 100%;
+    background-color: #0f1319;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    color: #e1e1e6;
+    font-size: 0.95rem;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #f0883e;
+}
+
+.comments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.comment-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.25rem;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.comment-header strong {
+    color: #f0883e;
+}
+
+.comment-date {
+    font-size: 0.8rem;
+    color: #8b949e;
+}
+
+.comment-body {
+    color: #c9d1d9;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+/* --- Style de la section Mises à Jour & Vidéos YouTube --- */
+.patchs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.patch-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow: hidden;
+}
+
+.patch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.patch-header h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.patch-date {
+    background-color: rgba(240, 136, 62, 0.15);
+    color: #f0883e;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border: 1px solid rgba(240, 136, 62, 0.3);
+}
+
+.patch-desc {
+    color: #c9d1d9;
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+    word-break: break-word;
+    white-space: pre-line;
+}
+
+.patch-video-container {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    background-color: #0f1319;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #30363d;
+    margin-top: 1rem;
+}
+
+.patch-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* --- Style pour les icônes de régime dans les badges --- */
+.dino-badges img {
+    height: 30px !important;
+    width: auto !important;
+    vertical-align: middle;
+    margin-right: 6px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}

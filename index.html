@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path of Titans - Guide Communautaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Barre de Navigation -->
+    <header>
+        <div class="logo">POT <span>GUIDE</span></div>
+        <nav>
+            <a href="#" class="nav-link active" data-target="accueil">Accueil</a>
+            <a href="#" class="nav-link" data-target="dinos">Dinos & Compétences</a>
+            <a href="#" class="nav-link" data-target="map">Map Interactive</a>
+            <a href="#" class="nav-link" data-target="mises-a-jour">Mises à Jour</a>
+            <a href="#" class="nav-link" data-target="communaute">Communauté</a>
+        </nav>
+    </header>
+
+    <!-- Contenu Principal -->
+    <main>
+        <!-- Section Accueil -->
+        <section id="accueil" class="tab-content active">
+            <div class="hero-banner">
+                <div class="hero-content">
+                    <span class="hero-badge">Encyclopédie Communautaire Officielle</span>
+                    <h1>Dominez le monde de <span class="highlight">Path of Titans</span></h1>
+                    <p>Explorez les fiches détaillées de chaque dinosaure, maîtrisez leurs compétences de combat par catégorie, et découvrez les meilleurs builds pour survivre sur Gondwa et Panjura.</p>
+                    <div class="hero-buttons">
+                        <button class="btn" onclick="switchTab('dinos')">Explorer les Dinos</button>
+                        <button class="btn secondary" onclick="switchTab('map')">Voir la Map Interactive</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Petites sections de cartes de mise en avant sous le hero -->
+            <div class="home-features-grid">
+                <div class="feature-card" onclick="switchTab('dinos')">
+                    <div class="feature-icon">🦖</div>
+                    <h3>Dinos & Compétences</h3>
+                    <p>Retrouvez l'historique complet, les régimes et les panneaux de compétences officiels de chaque espèce.</p>
+                </div>
+                <div class="feature-card" onclick="switchTab('map')">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Map Interactive</h3>
+                    <p>Repérez les points clés, les ressources et explorez la carte du jeu en toute simplicité.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>100% Dynamique</h3>
+                    <p>Les données sont actualisées en temps réel via notre base centralisée pour ne rien rater des mises à jour.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Dinosaures & Compétences -->
+        <section id="dinos" class="tab-content">
+            <!-- VUE 1 : La liste des dinos (générée dynamiquement depuis Google Sheet) -->
+            <div id="dinos-list-view">
+                <h2>Encyclopédie des Dinosaures</h2>
+                <p>Liste générée en direct depuis votre Google Sheet :</p>
+                
+                <div id="dinos-grid-container" class="dinos-grid">
+                    <!-- Les cartes des dinos s'injecteront ici automatiquement -->
+                    <p style="color: #8b949e;">Chargement des dinosaures en cours...</p>
+                </div>
+            </div>
+
+            <!-- VUE 2 : La fiche détaillée du dino -->
+            <div id="dino-detail-view" style="display: none;">
+                <button class="btn secondary" onclick="backToDinosList()" style="margin-bottom: 1.5rem;">← Retour à la liste</button>
+                <div id="dino-detail-content">
+                    <!-- Le contenu détaillé s'injectera ici -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Map Interactive -->
+        <section id="map" class="tab-content">
+            <h2>Cartes Interactives de Path of Titans</h2>
+            <p>Sélectionnez la carte que vous souhaitez explorer :</p>
+            
+            <!-- Boutons de sélection des maps -->
+            <div class="map-selector-buttons">
+                <button class="btn map-btn active" onclick="switchMap('gondwa', 'https://pierotstream-gondwa-map-interactive.onrender.com', this)">Gondwa</button>
+                <button class="btn secondary map-btn" onclick="switchMap('panjura', '', this)">Panjura (Bientôt)</button>
+                <button class="btn secondary map-btn" onclick="switchMap('riperia', '', this)">Riperia (Bientôt)</button>
+            </div>
+
+            <!-- Conteneur de l'Iframe de la Map -->
+            <div class="map-container" id="map-display-container">
+                <iframe src="https://pierotstream-gondwa-map-interactive.onrender.com" title="Path of Titans Map Interactive" class="map-iframe" id="active-map-iframe"></iframe>
+            </div>
+        </section>
+
+        <!-- Section Mises à Jour (Dynamique via Google Sheet & Vidéos YouTube) -->
+        <section id="mises-a-jour" class="tab-content">
+            <h2>Notes de Mise à Jour & Actualités</h2>
+            <p>Retrouvez les dernières nouveautés et vidéos officielles de Path of Titans :</p>
+            <div id="patchs-grid-container" class="patchs-grid">
+                <p style="color: #8b949e;">Chargement des mises à jour...</p>
+            </div>
+        </section>
+
+        <!-- Section Communauté & Commentaires -->
+        <section id="communaute" class="tab-content">
+            <h2>Espace Communautaire</h2>
+            <p>Laisse un commentaire, une suggestion ou partage ton avis avec la communauté :</p>
+            
+            <div class="comment-form-box">
+                <form id="comment-form" onsubmit="addComment(event)">
+                    <input type="text" id="comment-author" placeholder="Ton pseudo (ou nom de dino)" required class="form-input">
+                    <textarea id="comment-text" placeholder="Écris ton message ici..." rows="4" required class="form-input"></textarea>
+                    <button type="submit" class="btn">Publier le commentaire</button>
+                </form>
+            </div>
+
+            <div id="comments-list" class="comments-container">
+                <!-- Les commentaires s'afficheront ici -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+        <div class="footer-content">
+            <p>POT Guide • Créé avec passion par <a href="https://www.twitch.tv/pierotstream" target="_blank" class="twitch-link">PierotStream (Chaîne Twitch)</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

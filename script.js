@@ -5,7 +5,7 @@ const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y
 const PATCHS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y4hurFaZ6C6ADuOaLn_8cCVEwq4/export?format=csv&gid=787364891';
 
 // URL de ta feuille Google Sheet pour les Dinos Moddés (Remplace le gid par le bon onglet de ton choix)
-const MODDED_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y4hurFaZ6C6ADuOaLn_8cCVEwq4/edit?gid=1156698195#gid=1156698195';
+const MODDED_CSV_URL = 'https://docs.google.com/spreadsheets/d/1NQQD7SRU2JyYL2i_Y4hurFaZ6C6ADuOaLn_8cCVEwq4/export?format=csv&gid=1156698195';
 
 let dinosDatabase = {}; // Stockera les dinos récupérés du Google Sheet
 let moddedDatabase = {}; // Stockera les dinos moddés récupérés du Google Sheet
